@@ -1,0 +1,36 @@
+{
+    "rules": {
+        "curly": true,
+        "eofline": true,
+        "indent": [
+            true,
+            "space",
+            4
+        ],
+        "no-var-keyword": true,
+        "no-trailing-whitespace": true,
+        "no-unused-expression": true,
+        "no-unused-variable": false,
+        "no-unreachable": true,
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type"
+        ]
+    }
+}
