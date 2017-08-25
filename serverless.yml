@@ -11,7 +11,7 @@ custom:
     start:
       port: 8000
       inMemory: true
-      migrate: true
+      migrate: false
     migration:
       dir: offline/migrations
       
@@ -21,7 +21,7 @@ provider:
   stage: dev
   profile: test
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    TODO_DYNAMODB_TABLE: ${self:provider.stage}-todo
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -31,15 +31,43 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TODO_DYNAMODB_TABLE}"
 
 functions:
-  hello:
-    handler: dist/handler.hello
+  addTodo:
+    handler: dist/handler.addTodo
     events:
       - http:
-          path: hello
+          path: todo
           method: post
+          cors: true
+  updateTodo:
+    handler: dist/handler.updateTodo
+    events:
+      - http:
+          path: todo/{id}
+          method: put
+          cors: true
+  deleteTodo:
+    handler: dist/handler.deleteTodo
+    events:
+      - http:
+          path: todo/{id}
+          method: delete
+          cors: true
+  getTodo:
+    handler: dist/handler.getTodo
+    events:
+      - http:
+          path: todo/{id}
+          method: get
+          cors: true
+  getTodos:
+    handler: dist/handler.getTodos
+    events:
+      - http:
+          path: todo
+          method: get
           cors: true
 
 resources:
@@ -59,4 +87,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.TODO_DYNAMODB_TABLE}

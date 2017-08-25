@@ -1,6 +1,6 @@
 {
     "Table": {
-        "TableName": "sls-offline-with-dynamodb-hello-world-dev",
+        "TableName": "dev-todo",
         "KeySchema": [
             {
                 "AttributeName": "id",
